@@ -51,7 +51,7 @@ namespace UserAPI.Controllers
         {
             if(user == null)
             {
-                return NotFound("User data is not supplied");
+                return NotFound("User data is not supplied.");
             }
 
             if(!ModelState.IsValid)
@@ -60,6 +60,39 @@ namespace UserAPI.Controllers
             }   
 
             await _userContext.Users.AddAsync(user);
+            await _userContext.SaveChangesAsync();
+        
+            return Ok(user);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> Update([FromBody]User user)
+        {
+            if(user == null)
+            {
+                return NotFound("User data is not supplied.");
+            }
+
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }   
+
+            User existingUser = _userContext.Users.FirstOrDefault(u => u.UserId == user.UserId);
+
+            if(existingUser == null)
+            {
+                return NotFound("User does not exiting in the database.");
+            }
+
+            existingUser.Name = user.Name;
+            existingUser.Birthday = user.Birthday;
+            existingUser.Email = user.Email;
+            existingUser.Password = user.Password;
+            existingUser.Active = user.Active;
+            existingUser.GenreFK = user.GenreFK;
+            _userContext.Attach(existingUser).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+
             await _userContext.SaveChangesAsync();
         
             return Ok(user);

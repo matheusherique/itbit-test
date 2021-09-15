@@ -4,7 +4,6 @@ namespace UserAPI.Models
 {
     public class Genre
     {
-        [Required]
         [Key]
         public int GenreId{get;set;}
         

@@ -29,6 +29,8 @@ namespace UserAPI.Models
         [Required]
         public bool Active {get; set;}
 
+        public int? GenreId { get; set; }
+
         [ForeignKey("GenreId")]
         public Genre GenreFK {get; set;}
     }
