@@ -3,6 +3,11 @@
 $ dotnet run
 ```
 
+## Init frontend server
+```sh
+$ ng serve --open
+```
+
 ## Init backend server swagger
 ```sh
 $ dotnet watch run
