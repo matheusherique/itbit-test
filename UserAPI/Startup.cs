@@ -13,6 +13,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using UserAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Web.Http;
+using Microsoft.Owin.Cors;
 
 namespace UserAPI
 {
@@ -48,6 +50,10 @@ namespace UserAPI
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "UserAPI v1"));
             }
 
+            HttpConfiguration config = new HttpConfiguration();
+
+            config.EnableCors();
+            
             app.UseHttpsRedirection();
 
             app.UseRouting();

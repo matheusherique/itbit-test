@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using UserAPI.Models;
 using System.Threading.Tasks;
+using System.Web.Http.Cors;
 
 
 namespace UserAPI.Controllers
@@ -21,12 +22,14 @@ namespace UserAPI.Controllers
             _userContext = context;
         }
 
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
         [HttpGet]
         public ActionResult<IEnumerable<User>> Get()
         {
             return _userContext.Users.ToList();
         }
 
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
         [HttpGet]
         [Route("getbyid/{id}")]
         public ActionResult<User> GetById(int? id)
@@ -46,6 +49,7 @@ namespace UserAPI.Controllers
             return Ok(user);
         }
 
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
         [HttpPost]
         public async Task<ActionResult> Post([FromBody]User user)
         {
@@ -65,6 +69,7 @@ namespace UserAPI.Controllers
             return Ok(user);
         }
 
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
         [HttpPut]
         public async Task<ActionResult> Update([FromBody]User user)
         {
@@ -96,6 +101,29 @@ namespace UserAPI.Controllers
             await _userContext.SaveChangesAsync();
         
             return Ok(user);
+        }
+
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int? id)
+        {
+            if(id == null)
+            {
+                return NotFound("Id is not supplied.");
+            }
+
+            User user = _userContext.Users.FirstOrDefault(u => u.UserId == id);
+
+            if(user == null)
+            {
+                return NotFound("No user found with particular id suplied");
+            }
+
+            _userContext.Users.Remove(user);
+
+            await _userContext.SaveChangesAsync();
+            return Ok("User is deleted sucessfully.");
+
         }
         
 

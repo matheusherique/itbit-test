@@ -1,0 +1,12 @@
+table {
+    width: 100%;
+}
+
+table thead {
+    background-color: #226ce0;
+    color: aliceblue;
+}
+
+table td {
+    /* border: 1px solid; */
+}
